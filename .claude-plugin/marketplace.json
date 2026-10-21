@@ -1,0 +1,12 @@
+{
+  "name": "ivan-1c",
+  "owner": { "name": "Ivan" },
+  "metadata": { "description": "Плагины Claude Code для разработки на 1С" },
+  "plugins": [
+    {
+      "name": "1c-team",
+      "source": "./plugins/1c-team",
+      "description": "Команда агентов для разработки на 1С: аналитик, архитектор, разработчик, запросы, ревьюер"
+    }
+  ]
+}
