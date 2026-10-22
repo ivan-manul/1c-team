@@ -1,29 +1,97 @@
-# 1c-team
+# 1c-team — команда агентов для разработки на 1С
 
-Плагин Claude Code: команда агентов для разработки на 1С. Работает поверх плагина `unica`.
+[![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757)](https://docs.claude.com/en/docs/claude-code/plugins)
+[![version](https://img.shields.io/badge/version-0.2.3-blue)](plugins/1c-team/.claude-plugin/plugin.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+Плагин для [Claude Code](https://docs.claude.com/en/docs/claude-code), который превращает Claude в небольшую команду 1С-специалистов. Аналитик пишет ТЗ, архитектор проектирует решение, специалист по запросам пишет запросы, разработчик пишет код, а ревьюер проверяет результат на каждом этапе. Команда `/1c-team:task` проводит задачу от постановки до готового кода и останавливается там, где нужно ваше согласование.
+
+## Зачем
+
+- **Процесс вместо одного промпта.** Каждый этап выполняет отдельный агент со своей ролью и своим контекстом. Код не пишется, пока вы не согласовали ТЗ и план.
+- **Всё остаётся в файлах.** У каждой задачи своя папка: `тз.md` → `решение.md` → `код.md`. Её можно читать, править и передавать коллегам.
+- **Встроенный контроль качества.** Ревьюер проверяет ТЗ на полноту и проверяемость, а код — на соответствие ТЗ, ошибки проведения и блокировок, запросы в цикле, права и стандарты 1С.
+- **Имена из реальной конфигурации.** Агенты читают исходники через [unica](https://github.com/IngvarConsulting/unica-marketplace) и не выдумывают имена объектов.
+
+## Как это работает
+
+```mermaid
+flowchart LR
+  A[analyst<br/>тз.md] --> R1[reviewer<br/>ТЗ]
+  R1 -. доработка .-> A
+  R1 --> U1{{согласование}}
+  U1 --> AR[architect<br/>решение.md] --> U2{{план}}
+  U2 --> Q[query-writer<br/>запросы]
+  Q --> D[developer<br/>код]
+  D -. нужен запрос .-> Q
+  D --> R2[reviewer<br/>код]
+  R2 -. доработка .-> D
+```
 
 ## Состав
-- Агенты: `analyst`, `architect`, `developer`, `query-writer`, `reviewer`.
-- Команды: `/1c-team:spec`, `/1c-team:task`, `/1c-team:quick`.
-- Скилл: `spec-template` — шаблон спецификации.
+
+| Агент | Роль | Результат |
+|---|---|---|
+| `analyst` | Изучает текущее поведение, пишет требования Т1…Tn с критериями приёмки и открытыми вопросами | `тз.md` |
+| `architect` | Проектирует метаданные, модули, запросы, права и план шагов; сначала ищет готовое в БСП | `решение.md` |
+| `query-writer` | Пишет и оптимизирует запросы и СКД: без запросов в цикле, с отборами в параметрах виртуальных таблиц | текст запроса |
+| `developer` | Реализует план: метаданные через unica, код по стандартам 1С | `код.md` или модули |
+| `reviewer` | Проверяет ТЗ и код, выдаёт замечания и вердикт «принято / на доработку» | список замечаний |
+
+| Команда | Что делает |
+|---|---|
+| `/1c-team:task <задача>` | Полный цикл: ТЗ → решение → запросы → код → ревью |
+| `/1c-team:spec <задача>` | Только ТЗ: аналитик и ревьюер, затем согласование с вами |
+| `/1c-team:quick <правка>` | Короткий цикл для мелкой правки: найти → изменить → проверить |
+
+Скилл `spec-template` — шаблон и правила спецификации, по нему работает аналитик.
 
 ## Установка
+
+Нужен [Claude Code](https://docs.claude.com/en/docs/claude-code) и плагин `unica`:
+
 ```
-claude plugin marketplace add <владелец>/<репозиторий>
-claude plugin install 1c-team@ivan-1c
+/plugin marketplace add IngvarConsulting/unica-marketplace
+/plugin install unica@unica
+```
+
+Затем сам плагин:
+
+```
+/plugin marketplace add ivan-manul/claude-1c-team
+/plugin install 1c-team@ivan-1c
+```
+
+После установки перезапустите сессию Claude Code.
+
+## Пример
+
+```
+/1c-team:task При проведении «Заказа клиента» проверять кредитный лимит контрагента
+```
+
+Claude создаст папку задачи в `docs/specs/`, покажет ТЗ с открытыми вопросами и после вашего согласования перейдёт к решению и коду.
+
+Чтобы Claude следовал процессу и без команд, добавьте в `CLAUDE.md` проекта:
+
+```markdown
+- Задачи вести агентами 1c-team: analyst → reviewer → architect → query-writer → developer → reviewer.
+- Код пишется в код.md папки задачи; в модули — только по команде.
 ```
 
 ## Обновление
-Поднять `version` в `plugins/1c-team/.claude-plugin/plugin.json`, закоммитить, затем:
+
 ```
-claude plugin marketplace update ivan-1c
-claude plugin update 1c-team@ivan-1c
+/plugin marketplace update ivan-1c
+/plugin update 1c-team@ivan-1c
 ```
+
+Если вы дорабатываете плагин сами, перед коммитом поднимите `version` в [`plugin.json`](plugins/1c-team/.claude-plugin/plugin.json).
 
 ## Благодарности
-Идеи ролей и процесса навеяны [rmartynenko/workflow-dev-1c-claude-code](https://github.com/rmartynenko/workflow-dev-1c-claude-code) (MIT).
 
-Тексты агентов, команд и шаблона написаны заново.
+Идеи ролей и процесса навеяны [rmartynenko/workflow-dev-1c-claude-code](https://github.com/rmartynenko/workflow-dev-1c-claude-code) (MIT). Тексты агентов, команд и шаблона написаны заново.
 
 ## Лицензия
-MIT — см. [LICENSE](LICENSE).
+
+[MIT](LICENSE)
