@@ -1,10 +1,9 @@
 # 1c-team — команда агентов для разработки на 1С
 
-[![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757)](https://docs.claude.com/en/docs/claude-code/plugins)
 [![version](https://img.shields.io/badge/version-0.2.3-blue)](plugins/1c-team/.claude-plugin/plugin.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-Плагин для [Claude Code](https://docs.claude.com/en/docs/claude-code), который превращает Claude в небольшую команду 1С-специалистов. Аналитик пишет ТЗ, архитектор проектирует решение, специалист по запросам пишет запросы, разработчик пишет код, а ревьюер проверяет результат на каждом этапе. Команда `/1c-team:task` проводит задачу от постановки до готового кода и останавливается там, где нужно ваше согласование.
+Плагин-команда ИИ-агентов для 1С-разработки. Аналитик пишет ТЗ, архитектор проектирует решение, специалист по запросам пишет запросы, разработчик пишет код, а ревьюер проверяет результат на каждом этапе. Команда `/1c-team:task` проводит задачу от постановки до готового кода и останавливается там, где нужно ваше согласование.
 
 ## Зачем
 
@@ -46,7 +45,7 @@ flowchart LR
 
 Скилл `spec-template` — шаблон и правила спецификации, по нему работает аналитик.
 
-## Установка
+## Требования и установка
 
 Нужен [Claude Code](https://docs.claude.com/en/docs/claude-code) и плагин `unica`:
 
@@ -58,7 +57,7 @@ flowchart LR
 Затем сам плагин:
 
 ```
-/plugin marketplace add ivan-manul/claude-1c-team
+/plugin marketplace add ivan-manul/1c-team
 /plugin install 1c-team@ivan-1c
 ```
 
@@ -70,9 +69,9 @@ flowchart LR
 /1c-team:task При проведении «Заказа клиента» проверять кредитный лимит контрагента
 ```
 
-Claude создаст папку задачи в `docs/specs/`, покажет ТЗ с открытыми вопросами и после вашего согласования перейдёт к решению и коду.
+Команда создаст папку задачи в `docs/specs/`, покажет ТЗ с открытыми вопросами и после вашего согласования перейдёт к решению и коду.
 
-Чтобы Claude следовал процессу и без команд, добавьте в `CLAUDE.md` проекта:
+Чтобы процесс соблюдался и без команд, добавьте в инструкции проекта:
 
 ```markdown
 - Задачи вести агентами 1c-team: analyst → reviewer → architect → query-writer → developer → reviewer.
