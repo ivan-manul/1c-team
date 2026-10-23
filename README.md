@@ -1,6 +1,6 @@
 # 1c-team — команда агентов для разработки на 1С
 
-[![version](https://img.shields.io/badge/version-0.4.5-blue)](plugins/1c-team/.claude-plugin/plugin.json)
+[![version](https://img.shields.io/badge/version-0.4.6-blue)](plugins/1c-team/.claude-plugin/plugin.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Плагин для 1С-разработки с ИИ: ТЗ, план и код пишет основная сессия, а два агента-проверяющих — архитектор и дизайнер — смотрят на них свежим взглядом до и после реализации. Главное решение — план — согласуете вы.
