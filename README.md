@@ -1,6 +1,6 @@
 # 1c-team — команда агентов для разработки на 1С
 
-[![version](https://img.shields.io/badge/version-0.4.11-blue)](plugins/1c-team/.claude-plugin/plugin.json)
+[![version](https://img.shields.io/badge/version-0.5.0-blue)](plugins/1c-team/.claude-plugin/plugin.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Плагин для 1С-разработки с ИИ: ТЗ, план и код пишет основная сессия, а два агента-проверяющих — архитектор и дизайнер — смотрят на них свежим взглядом до и после реализации. Главное решение — план — согласуете вы.
@@ -46,6 +46,7 @@ flowchart LR
 | `code-standards` | Имена, описания методов, перехват в расширении, запросы, проверка |
 | `architecture-review` | Чек-лист ревью плана и диффа |
 | `ui-review` | Чек-лист ревью интерфейса |
+| `standards` | 321 стандарт разработки 1С офлайн — если unica их не отдаёт |
 
 | Команда | Что делает |
 |---|---|
@@ -98,6 +99,8 @@ flowchart LR
 ## Благодарности
 
 Идеи ролей и процесса навеяны [rmartynenko/workflow-dev-1c-claude-code](https://github.com/rmartynenko/workflow-dev-1c-claude-code) (MIT). Тексты агентов, команд и скиллов написаны заново.
+
+Стандарты в скилле `standards` — из [zeegin/v8std](https://github.com/zeegin/v8std) (CC0).
 
 ## Лицензия
 
